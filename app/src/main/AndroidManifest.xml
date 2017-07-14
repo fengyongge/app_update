@@ -4,6 +4,9 @@
 
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!--写入权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+
 
     <application
         android:allowBackup="true"
@@ -18,6 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".DownLoadService"/>
     </application>
 
 </manifest>

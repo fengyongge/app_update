@@ -1,2 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\8d6ffd1b717b08e040e673de804f16d8d962c931\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="6e57fe155cea810fb2ba5fe9ffabcb197ecf81d1">
+        <dex dex="E:\github\app_update\app\build\intermediates\pre-dexed\debug\classes_ad09dcc34cb91b150fee0be7998c5cd6a99483fc.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\github\app_update\app\libs\afinal-0.3.32-bin.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="54417b03f2eb410e2a94428512e4f4218e7fc012">
+        <dex dex="E:\github\app_update\app\build\intermediates\pre-dexed\debug\afinal-0.3.32-bin_14db250415aee955d4d94713aa98d6f12411c607.jar" />
+    </item>
+
+</items>
