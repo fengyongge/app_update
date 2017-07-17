@@ -1,15 +1,14 @@
 package com.zzti.fengyongge.appupdatedemo.utils;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Process;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,18 +17,14 @@ import android.widget.Toast;
 
 import com.zzti.fengyongge.appupdatedemo.DownLoadService;
 import com.zzti.fengyongge.appupdatedemo.R;
-
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
-
 import java.io.File;
-
-import me.drakeet.materialdialog.MaterialDialog;
 
 /**
  * @author fengyongge
  * @Description
- * @date 2017/5/16 0016 下午 6:13
+ * @date 2017/7/17
  */
 public class AppUpdateUtils {
 
@@ -40,9 +35,7 @@ public class AppUpdateUtils {
      TextView tvMessage;
      AlertDialog downloadalert;
      Context context;
-    MaterialDialog mMaterialDialog;
-
-
+     android.support.v7.app.AlertDialog.Builder builder;
     private  File fileName= Environment.getExternalStorageDirectory();//目标文件存储的文件夹路径
     private String destFileName = "test.apk";//目标文件存储的文件名
 
@@ -64,14 +57,14 @@ public class AppUpdateUtils {
         tvMessage.setMovementMethod(ScrollingMovementMethod.getInstance());// 滚动
 
         downloadalert = new AlertDialog.Builder(context).setView(update_item).create();
+        downloadalert.setCanceledOnTouchOutside(false);
         downloadalert.show();
 
         if(isForceUpdate){
             tvCancle.setVisibility(View.GONE);//不显示取消
-            downloadalert.setCancelable(false);//强制更新
+            downloadalert.setCancelable(false);//返回键失效
         }else{
             tvCancle.setVisibility(View.VISIBLE);
-
         }
 
         tvConfirm.setOnClickListener(new View.OnClickListener() {
@@ -90,9 +83,7 @@ public class AppUpdateUtils {
                      if (!file.exists()) {
                         file.mkdirs();
                      }
-
                 }
-
 
                 tvMessage.setText("下载进度:0%");
 
@@ -106,8 +97,6 @@ public class AppUpdateUtils {
                         Toast.makeText(context, "下载失败"+strMsg, Toast.LENGTH_SHORT).show();
 
                         downloadalert.dismiss();
-                        if (t != null)
-                            t.printStackTrace();
                     }
 
                     @Override
@@ -121,10 +110,7 @@ public class AppUpdateUtils {
                     @Override
                     public void onSuccess(File t) {
 
-                        Intent i = new Intent(Intent.ACTION_VIEW);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        i.setDataAndType(Uri.parse("file://" + file.toString()), "application/vnd.android.package-archive");
-                        context.startActivity(i);
+                        installApk(context,file);
                         Process.killProcess(Process.myPid());
                         tvConfirm.setClickable(true);
                         downloadalert.dismiss();
@@ -144,6 +130,20 @@ public class AppUpdateUtils {
     }
 
 
+    /**
+     * 安装软件
+     *
+     * @param file
+     */
+    private void installApk(Context context,File file) {
+        Uri uri = Uri.fromFile(file);
+        Intent install = new Intent(Intent.ACTION_VIEW);
+        install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        install.setDataAndType(uri, "application/vnd.android.package-archive");
+        context.startActivity(install);
+    }
+
+
 
     /**
      * 创建更新提醒对话框
@@ -154,30 +154,31 @@ public class AppUpdateUtils {
      */
     public void showMaterialUpdateDialog(final Context context, String message, final String download_url, boolean isForceUpdate) {
 
-        this.context = context;
+       builder = new android.support.v7.app.AlertDialog.Builder(context)
+        .setCancelable(false)
+        .setTitle("APP更新")
+        .setMessage(Html.fromHtml(message))
+        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(context, DownLoadService.class);
+                intent.putExtra("download_url",download_url);
+                context.startService(intent);
+            }
+        });
 
-        mMaterialDialog = new MaterialDialog(context)
-                .setTitle("应用更新")
-                .setMessage(Html.fromHtml(message))
-                .setPositiveButton("确定", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+        if(isForceUpdate){
 
-                        Intent intent = new Intent(context, DownLoadService.class);
-                        context.startService(intent);
-                        mMaterialDialog.dismiss();
+        }else{
+            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
-                    }
-                })
-                .setNegativeButton("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mMaterialDialog.dismiss();
+                }
+            });
+        }
+        builder.show();
 
-                    }
-                });
-
-        mMaterialDialog.show();
     }
 
 }

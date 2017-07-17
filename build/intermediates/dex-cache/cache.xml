@@ -3,12 +3,30 @@
 
     <item
         is-multidex="false"
-        jar="C:\Users\Administrator\.android\build-cache\8d6ffd1b717b08e040e673de804f16d8d962c931\output\jars\classes.jar"
+        jar="C:\Users\Administrator\.android\build-cache\8dfa85ca0473af7c18819df3fc0aae540a97151e\output\jars\libs\internal_impl-23.1.0.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.0"
-        sha1="6e57fe155cea810fb2ba5fe9ffabcb197ecf81d1">
-        <dex dex="E:\github\app_update\app\build\intermediates\pre-dexed\debug\classes_ad09dcc34cb91b150fee0be7998c5cd6a99483fc.jar" />
+        sha1="8716243bf04bae8d6c9ca94d27b9a9be7236f0a3">
+        <dex dex="E:\github\app_update\app\build\intermediates\pre-dexed\debug\internal_impl-23.1.0_0ed015daa352dd9bacc23668b56b1da87453874c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\8dfa85ca0473af7c18819df3fc0aae540a97151e\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="ddde541c289c8b816a8f8fd6c325d80788c522a6">
+        <dex dex="E:\github\app_update\app\build\intermediates\pre-dexed\debug\classes_a128019885e3477cae54c5e0bad1b9bc4bafe8b9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\c2213b3ff371c356704cfe4ab96866f6b12ebef9\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="57ae0d750ff83f0c738d21720224ac7ea866a094">
+        <dex dex="E:\github\app_update\app\build\intermediates\pre-dexed\debug\classes_93d0c7e3a9dde29910f3a190888fbc6a076cfc2a.jar" />
     </item>
     <item
         is-multidex="false"
@@ -18,6 +36,15 @@
         revision="25.0.0"
         sha1="54417b03f2eb410e2a94428512e4f4218e7fc012">
         <dex dex="E:\github\app_update\app\build\intermediates\pre-dexed\debug\afinal-0.3.32-bin_14db250415aee955d4d94713aa98d6f12411c607.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\SDK\extras\android\m2repository\com\android\support\support-annotations\23.1.0\support-annotations-23.1.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="92e3fc113ec3ee36b64603a38857b95700025633">
+        <dex dex="E:\github\app_update\app\build\intermediates\pre-dexed\debug\support-annotations-23.1.0_edac7719713beec49d9aa14e3050935de4afb86b.jar" />
     </item>
 
 </items>

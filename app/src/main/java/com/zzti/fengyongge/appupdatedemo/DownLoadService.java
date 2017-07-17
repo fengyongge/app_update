@@ -4,6 +4,8 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.IBinder;
@@ -16,24 +18,25 @@ import java.io.File;
 /**
  * @author fengyongge
  * @Description
- * @date 2017/5/16
+ * @date 2017/7/17
  */
 public class DownLoadService extends Service {
 
     File file;
-    private String download_url="http://qiye.wxsdc.ediankai.com/static/feihe/apk/meeting.apk";
     private  File fileName= Environment.getExternalStorageDirectory();//目标文件存储的文件夹路径
     private String destFileName = "test.apk";//目标文件存储的文件名
-
     private Context mContext;
     private int preProgress = 0;
     private int NOTIFY_ID = 1000;
     private NotificationCompat.Builder builder;
     private NotificationManager notificationManager;
+    private String download_url="";
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mContext = this;
+        download_url = intent.getStringExtra("download_url");
         loadFile();
         return super.onStartCommand(intent, flags, startId);
     }
@@ -55,7 +58,6 @@ public class DownLoadService extends Service {
             file = new File(fileName, destFileName);
 
         } else {
-
             file = new File("/data/data/com.diankai.ecosphere/temp", "ecosphere.apk");
 
             if (!file.exists()) {
@@ -63,8 +65,6 @@ public class DownLoadService extends Service {
             }
 
         }
-
-
 
 
         FinalHttp finalHttp = new FinalHttp();
@@ -79,7 +79,7 @@ public class DownLoadService extends Service {
             }
 
             @Override
-            public void onLoading(long progress, long total) {
+            public void onLoading(long total, long progress) {
                 super.onLoading(progress, total);
 
                 updateNotification(progress * 100 / total);// 更新前台通知
@@ -118,8 +118,8 @@ public class DownLoadService extends Service {
     public void initNotification() {
         builder = new NotificationCompat.Builder(mContext)
                 .setSmallIcon(R.mipmap.ic_launcher)// 设置通知的图标
-                .setContentText("0%")// 进度Text
-                .setContentTitle("App更新")// 标题
+                .setContentText("正在下载0%")// 进度Text
+                .setContentTitle("下载"+getAppName(mContext))// 标题
                 .setProgress(100, 0, false);// 设置进度条
         notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);// 获取系统通知管理器
         notificationManager.notify(NOTIFY_ID, builder.build());// 发送通知 
@@ -131,7 +131,7 @@ public class DownLoadService extends Service {
     public void updateNotification(long progress) {
         int currProgress = (int) progress;
         if (preProgress < currProgress) {
-            builder.setContentText(progress + "%");
+            builder.setContentText("正在下载"+progress + "%");
             builder.setProgress(100, (int) progress, false);
             notificationManager.notify(NOTIFY_ID, builder.build());
         }
@@ -145,4 +145,22 @@ public class DownLoadService extends Service {
     public void cancelNotification() {
         notificationManager.cancel(NOTIFY_ID);
     }
+
+
+
+    /**
+     * 获取应用程序名称
+     */
+    public static String getAppName(Context context) {
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            PackageInfo packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            int labelRes = packageInfo.applicationInfo.labelRes;
+            return context.getResources().getString(labelRes);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
